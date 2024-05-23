@@ -13,7 +13,7 @@ ppo_params = {
     'clip_range': 0.1,
     'ent_coef': 0.01,
     'vf_coef': 0.5,
-    'tensorboard_log': "./ppo_frogger_tensorboard/"
+    'tensorboard_log': "./ppo_freeway_tensorboard/"
 }
 
 models_dir = "models/PPO_Params"
