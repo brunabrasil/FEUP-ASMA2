@@ -1,3 +1,5 @@
 logs
 models
 a2c_frogger_tensorboard
+ppo_frogger_tensorboard
+ppo_freeway_tensorboard

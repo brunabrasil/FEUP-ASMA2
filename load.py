@@ -2,10 +2,10 @@ import gym
 from stable_baselines3 import PPO, A2C
 from stable_baselines3.common.vec_env import DummyVecEnv, VecTransposeImage
 
-models_dir = "models/A2C_Params"
+models_dir = "models/PPO_freeway"
 
 # Create the environment
-env = gym.make('ALE/Frogger-v5', render_mode="human")
+env = gym.make('ALE/Freeway-v5', render_mode="human")
 env = DummyVecEnv([lambda: env])
 env = VecTransposeImage(env)
 
