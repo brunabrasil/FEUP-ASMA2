@@ -5,19 +5,19 @@ import os
 
 a2c_params = {
     'learning_rate': 0.0007,  # Learning rate
-    'n_steps': 5,  # Number of steps to run for each environment per update
+    'n_steps': 128,  # Number of steps to run for each environment per update
     'gamma': 0.99,  # Discount factor
     'gae_lambda': 1.0,  # GAE lambda parameter
     'ent_coef': 0.01,  # Entropy coefficient
     'vf_coef': 0.5,  # Value function coefficient in the loss function
     'max_grad_norm': 0.5,  # Maximum norm for the gradient clipping
-    'tensorboard_log': "./a2c_SpaceInvaders_tensorboard/"
+    'tensorboard_log': "./a2c_Freeway_tensorboard/"
 }
 
-models_dir = "models/A2C_SpaceInvaders"
+models_dir = "models/A2C_Freeway"
 version = 10000
 
-env = make_vec_env("ALE/SpaceInvaders-v5", n_envs= 4)
+env = make_vec_env("ALE/Freeway-v5", n_envs= 4)
 env.reset()
 
 if not os.path.exists(models_dir):
@@ -32,8 +32,7 @@ else:
     print("Training new model from scratch")
 
 
-
 TIMESTEPS = 10000
-for i in range(int(version/10000), 100):
+for i in range(int(version/10000), int(version/10000) + 200):
     model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name="A2C")
     model.save(f"{models_dir}/{TIMESTEPS*i}")

@@ -1,5 +1,6 @@
 logs
 models
-a2c_frogger_tensorboard
+A2C_0
 a2c_freeway_tensorboard
 a2c_freeway_tensorboard_default
+dqn_freeway_tensorboard

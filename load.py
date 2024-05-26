@@ -1,18 +1,16 @@
 import os
 import gymnasium as gym
-from stable_baselines3 import A2C
-from stable_baselines3.common.vec_env import VecFrameStack
-from stable_baselines3.common.env_util import make_vec_env
+from stable_baselines3 import DQN
 
 # Directories for saving models and logs
-models_dir = "models/A2C_SpaceInvaders"
+models_dir = "models/DQN_Freeway"
 
 # Load the latest model from the checkpoint
-latest_model = models_dir + "/90000"
+latest_model = models_dir + "/1100000"
 
-env = gym.make("ALE/SpaceInvaders-v5", render_mode="human")
+env = gym.make("ALE/Freeway-v5", render_mode="human")
 
-model = A2C.load(latest_model, env=env)
+model = DQN.load(latest_model, env=env)
 
 # Function to run the model and render the game
 def enjoy_game(env, model, episodes=5):
