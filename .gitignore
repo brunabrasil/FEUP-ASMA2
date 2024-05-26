@@ -3,3 +3,10 @@ models
 a2c_frogger_tensorboard
 ppo_frogger_tensorboard
 ppo_freeway_tensorboard
+a2c_freeway_tensorboard
+a2c_freeway_tensorboard_default
+ppo_freeway_tensorboard_1env
+ppo_freeway_tensorboard_8env
+ppo_freeway_tensorboard_9
+ppo_freeway_tensorboard_worse
+tensorboard
