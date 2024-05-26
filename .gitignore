@@ -1,5 +1,6 @@
 logs
 models
+<<<<<<< HEAD
 a2c_frogger_tensorboard
 ppo_frogger_tensorboard
 ppo_freeway_tensorboard
@@ -10,3 +11,9 @@ ppo_freeway_tensorboard_8env
 ppo_freeway_tensorboard_9
 ppo_freeway_tensorboard_worse
 tensorboard
+=======
+A2C_0
+a2c_freeway_tensorboard
+a2c_freeway_tensorboard_default
+dqn_freeway_tensorboard
+>>>>>>> 2c2bb146e2341d6ebf894e92fce73ccc954dafaa

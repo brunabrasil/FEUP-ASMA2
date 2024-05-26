@@ -4,7 +4,7 @@ from stable_baselines3.common.env_util import make_vec_env
 import os
 
 ppo_params = {
-    'learning_rate': 2.5e-4,
+    'learning_rate': 0.0007,
     'n_steps': 128,
     'batch_size': 256,
     'n_epochs': 4,
@@ -21,7 +21,7 @@ models_dir = "models/PPO_freeway"
 if not os.path.exists(models_dir):
     os.makedirs(models_dir)
 
-env = make_vec_env("ALE/Freeway-v5", n_envs= 1)
+env = make_vec_env("ALE/Freeway-v5", n_envs= 4)
 env.reset()
 
 model = PPO('CnnPolicy', env, **ppo_params, verbose=1)
