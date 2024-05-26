@@ -1,39 +1,34 @@
-import gym
+import gymnasium as gym
 import os
 from stable_baselines3 import PPO
 
 
-class CustomAtlantisEnv(gym.Wrapper):
+class CustomFreeway(gym.Wrapper):
     def __init__(self, env):
-        super(CustomAtlantisEnv, self).__init__(env)
-        self.previous_state = None
-        self.lanes_rewarded = []
-        self.last_lane = None
+        super(CustomFreeway, self).__init__(env)
+        self.previous_y = None
 
     def reset(self, **kwargs):
         self.previous_state = self.env.reset(**kwargs)
-        self.lanes_rewarded = []
-        self.last_lane = None
+        self.previous_y = None
         return self.previous_state
 
     def step(self, action):
         state, reward, done, truncated, info = self.env.step(action)
-
         y_position = state[97:104, 54:59, 0].sum()
+        #y_position = self.env.unwrapped.ale.getRAM()[83]
 
-        # Calculate the lane index (assuming 10 lanes)
-        lane_height = state.shape[0] / 10
-        lane_index = int(y_position // lane_height)  # Calculate the current lane index
-
+        print(y_position)
+        print(self.previous_y)
         # Calculate the reward
         custom_reward = 0
-        if lane_index not in self.lanes_rewarded:
-            custom_reward += 1  # Passed a lane for the first time
-            self.lanes_rewarded.append(lane_index)
+        if self.previous_y is not None:
+            if y_position < self.previous_y:
+                custom_reward = 5  # Moving forward
+            elif y_position > self.previous_y:
+                custom_reward = -1  # Moving backward
 
-        self.last_lane = lane_index
-        self.previous_state = state
-        print(custom_reward)
+        self.previous_y = y_position
         return state, custom_reward, done, truncated, info
     
 
@@ -41,32 +36,34 @@ class CustomAtlantisEnv(gym.Wrapper):
 ppo_params = {
     'learning_rate': 0.0007,
     'n_steps': 128,
-    'batch_size': 256,
+    'batch_size': 128,
     'n_epochs': 4,
     'gamma': 0.99,
     'gae_lambda': 0.95,
     'clip_range': 0.1,
     'ent_coef': 0.01,
     'vf_coef': 0.5,
-    'tensorboard_log': "./ppo_freeway_tensorboard/"
+    'tensorboard_log': "./ppo_freeway_tensorboard_custom/"
 }
   
 
-models_dir = "models/CUSTOM_RECURRENT"
-logdir = "logs"
+models_dir = "models/PPO_custom"
 
 if not os.path.exists(models_dir):
     os.makedirs(models_dir)
 
-if not os.path.exists(logdir):
-    os.makedirs(logdir)
 
 # Create the environment
-env = gym.make('ALE/Atlantis-v5', render_mode="rgb_array", obs_type="grayscale")
+env = gym.make('ALE/Freeway-v5', render_mode='human')
 env.reset()
 
 # Wrap the environment with the custom wrapper
-env = CustomAtlantisEnv(env)
+env = CustomFreeway(env)
 
 # Initialize the model
 model = PPO('CnnPolicy', env, **ppo_params, verbose=1)
+
+TIMESTEPS = 10000
+for i in range(1,201):
+    model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name="PPO")
+    model.save(f"{models_dir}/{TIMESTEPS*i}")
